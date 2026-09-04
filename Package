@@ -1,0 +1,38 @@
+Created package.json
+
+### 📦 Packages Required: **None (Zero Installations Needed!)**
+
+**QuantumCalc Pro** is built using **Pure Vanilla HTML5, CSS3, and modern JavaScript (ES6+)**. It runs 100% natively in any web browser without needing heavy dependencies or build tools.
+
+---
+
+### 🌐 Included via Lightweight CDN (Automatic):
+1. **Lucide Icons** — For UI icons *(loaded automatically via CDN in `index.html`)*
+   ```html
+   <script src="https://unpkg.com/lucide@latest"></script>
+   ```
+2. **Google Fonts** — *Outfit* & *JetBrains Mono* *(loaded automatically via `@import` in `style.css`)*
+
+---
+
+### 🛠️ Optional Local Dev Server (If using Node.js/NPM):
+I have added a [package.json](file:///c:/Users/sharm/OneDrive/Desktop/SCIENTIFIC%20CALCULATOR/package.json) so you can optionally run:
+
+```bash
+# Optional: Install lightweight local server
+npm install
+
+# Start local server
+npm start
+```
+
+Or run directly without installing anything:
+```bash
+# Using Python (Built-in on Windows/Mac/Linux)
+python -m http.server 8080
+
+# Or using Node.js without installation
+npx serve .
+```
+
+You can also simply **double-click [index.html](file:///c:/Users/sharm/OneDrive/Desktop/SCIENTIFIC%20CALCULATOR/index.html)** in your file explorer to open it immediately!
