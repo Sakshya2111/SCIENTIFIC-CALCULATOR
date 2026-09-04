@@ -1,0 +1,575 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="cyber-neon">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="QuantumCalc Pro - Ultra-Advanced Scientific Calculator with 2D Function Graphing, Calculation History, Categorized Starred Favorites, and Programmer Bitwise Mode.">
+    <title>QuantumCalc Pro — Advanced Scientific Calculator & Grapher</title>
+    <link rel="stylesheet" href="style.css">
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body>
+
+    <div class="app-container">
+        <!-- App Header -->
+        <header class="app-header">
+            <div class="brand-section">
+                <div class="brand-logo">Q</div>
+                <div class="brand-info">
+                    <h1>QuantumCalc <span class="badge-pro">PRO</span></h1>
+                    <span class="brand-subtitle">Advanced Scientific & Graphing Engine</span>
+                </div>
+            </div>
+
+            <!-- Mode Switcher Tabs -->
+            <nav class="module-tabs" aria-label="Calculator Modes">
+                <button class="tab-btn active" data-mode="scientific" id="tabScientific">
+                    <i data-lucide="calculator"></i> Scientific
+                </button>
+                <button class="tab-btn" data-mode="grapher" id="tabGrapher">
+                    <i data-lucide="line-chart"></i> 2D Grapher
+                </button>
+                <button class="tab-btn" data-mode="programmer" id="tabProgrammer">
+                    <i data-lucide="binary"></i> Programmer
+                </button>
+                <button class="tab-btn" data-mode="solver" id="tabSolver">
+                    <i data-lucide="sigma"></i> Solvers
+                </button>
+                <button class="tab-btn" data-mode="converter" id="tabConverter">
+                    <i data-lucide="arrow-left-right"></i> Converter
+                </button>
+            </nav>
+
+            <!-- Header Action Buttons -->
+            <div class="header-actions">
+                <!-- Theme Selector -->
+                <select id="themeSelect" class="select-input" title="Choose Theme">
+                    <option value="cyber-neon">⚡ Cyber Neon</option>
+                    <option value="deep-space">🌌 Deep Space</option>
+                    <option value="matrix-green">💻 Matrix Green</option>
+                    <option value="sunset-amber">🌆 Sunset Amber</option>
+                    <option value="titanium-frost">❄️ Titanium Frost</option>
+                </select>
+
+                <!-- Sound Toggle -->
+                <button id="btnSoundToggle" class="icon-btn" title="Toggle Tactile Audio (SFX)">
+                    <i data-lucide="volume-2" id="soundIcon"></i>
+                </button>
+
+                <!-- Keyboard Help -->
+                <button id="btnShortcuts" class="icon-btn" title="Keyboard Shortcuts">
+                    <i data-lucide="keyboard"></i>
+                </button>
+
+                <!-- Favorites Drawer Button -->
+                <button id="btnOpenFavorites" class="icon-btn" title="View Starred Favorites & Notes">
+                    <i data-lucide="star" style="color: #fbbf24;"></i> Favorites
+                    <span class="badge-count" id="favCountBadge">0</span>
+                </button>
+
+                <!-- History Drawer Button -->
+                <button id="btnOpenHistory" class="icon-btn" title="View Calculation History">
+                    <i data-lucide="history"></i> History
+                    <span class="badge-count" id="histCountBadge">0</span>
+                </button>
+            </div>
+        </header>
+
+        <!-- Main Workspace -->
+        <main class="main-layout">
+            
+            <!-- 1. Scientific Calculator View -->
+            <section id="viewScientific" class="mode-view active" aria-label="Scientific Calculator View">
+                <!-- Display Section -->
+                <div class="calc-display" id="mainDisplayCard">
+                    <div class="display-meta">
+                        <div class="display-badges">
+                            <button id="angleModeToggle" class="badge-mode active" title="Toggle Angle Mode (DEG/RAD)">DEG</button>
+                            <span id="memStatusBadge" class="badge-mode" style="display:none;">M</span>
+                            <span id="secondModeBadge" class="badge-mode" style="display:none;">2nd</span>
+                        </div>
+                        <div class="display-actions">
+                            <button id="btnCopyDisplay" class="display-tool-btn" title="Copy Result">
+                                <i data-lucide="copy"></i>
+                            </button>
+                            <button id="btnStarCurrent" class="display-tool-btn" title="Star this calculation as Favorite">
+                                <i data-lucide="star"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Secondary Expression Line / Previous Calculation -->
+                    <div class="display-secondary" id="displaySecondary">0</div>
+
+                    <!-- Primary Calculation Input Line -->
+                    <div class="display-primary-container">
+                        <div class="display-primary" id="displayPrimary" contenteditable="false" spellcheck="false">0</div>
+                    </div>
+
+                    <!-- Live Instant Preview -->
+                    <div class="live-preview-box" id="livePreviewBox">
+                        <span id="livePreviewResult">= 0</span>
+                    </div>
+                </div>
+
+                <!-- Quick Pinned Macros Strip -->
+                <div class="macro-chips-bar" id="pinnedMacrosBar">
+                    <span class="macro-chip-label">Pinned:</span>
+                    <div id="macroChipsContainer" style="display: flex; gap: 6px;"></div>
+                </div>
+
+                <!-- Scientific Keypad Grid -->
+                <div class="keypad-wrapper" id="scientificKeypad">
+                    <!-- Row 1: Function Modifiers & Memory -->
+                    <button class="key-btn key-func" data-action="toggle-second" title="Second Function Set">
+                        <span class="show-primary">2nd</span>
+                        <span class="show-secondary">1st</span>
+                    </button>
+                    <button class="key-btn key-func" data-action="toggle-angle" id="btnKeyAngle">DEG</button>
+                    <button class="key-btn key-func" data-action="mem-clear" title="Memory Clear">MC</button>
+                    <button class="key-btn key-func" data-action="mem-recall" title="Memory Recall">MR</button>
+                    <button class="key-btn key-func" data-action="mem-add" title="Memory Add">M+</button>
+                    <button class="key-btn key-func" data-action="mem-sub" title="Memory Subtract">M-</button>
+
+                    <!-- Row 2: Powers & Roots -->
+                    <button class="key-btn key-func" data-insert="^2" title="Square (x²)">
+                        <span class="show-primary">x²</span>
+                        <span class="show-secondary">x³</span>
+                    </button>
+                    <button class="key-btn key-func" data-insert="^" title="Power (x^y)">xʸ</button>
+                    <button class="key-btn key-func" data-insert="sqrt(" title="Square Root (√x)">
+                        <span class="show-primary">√x</span>
+                        <span class="show-secondary">³√x</span>
+                    </button>
+                    <button class="key-btn key-func" data-insert="ln(" title="Natural Logarithm (ln)">
+                        <span class="show-primary">ln</span>
+                        <span class="show-secondary">eˣ</span>
+                    </button>
+                    <button class="key-btn key-func" data-insert="log10(" title="Base-10 Logarithm">
+                        <span class="show-primary">log</span>
+                        <span class="show-secondary">10ˣ</span>
+                    </button>
+                    <button class="key-btn key-danger" data-action="clear" title="Clear All (AC)">AC</button>
+
+                    <!-- Row 3: Trigonometry & Parenthesis -->
+                    <button class="key-btn key-func" data-insert="sin(" title="Sine">
+                        <span class="show-primary">sin</span>
+                        <span class="show-secondary">asin</span>
+                    </button>
+                    <button class="key-btn key-func" data-insert="cos(" title="Cosine">
+                        <span class="show-primary">cos</span>
+                        <span class="show-secondary">acos</span>
+                    </button>
+                    <button class="key-btn key-func" data-insert="tan(" title="Tangent">
+                        <span class="show-primary">tan</span>
+                        <span class="show-secondary">atan</span>
+                    </button>
+                    <button class="key-btn key-func" data-insert="(">(</button>
+                    <button class="key-btn key-func" data-insert=")">)</button>
+                    <button class="key-btn key-danger" data-action="backspace" title="Backspace">
+                        <i data-lucide="delete"></i>
+                    </button>
+
+                    <!-- Row 4: Hyperbolic, Constants & Numerals 7, 8, 9, ÷ -->
+                    <button class="key-btn key-func" data-insert="sinh(" title="Hyperbolic Sine">
+                        <span class="show-primary">sinh</span>
+                        <span class="show-secondary">asinh</span>
+                    </button>
+                    <button class="key-btn key-func" data-insert="pi" title="Pi (π)">π</button>
+                    <button class="key-btn key-num" data-insert="7">7</button>
+                    <button class="key-btn key-num" data-insert="8">8</button>
+                    <button class="key-btn key-num" data-insert="9">9</button>
+                    <button class="key-btn key-op" data-insert="/" title="Division">÷</button>
+
+                    <!-- Row 5: Hyperbolic, Euler & Numerals 4, 5, 6, × -->
+                    <button class="key-btn key-func" data-insert="cosh(" title="Hyperbolic Cosine">
+                        <span class="show-primary">cosh</span>
+                        <span class="show-secondary">acosh</span>
+                    </button>
+                    <button class="key-btn key-func" data-insert="e" title="Euler's Number (e)">e</button>
+                    <button class="key-btn key-num" data-insert="4">4</button>
+                    <button class="key-btn key-num" data-insert="5">5</button>
+                    <button class="key-btn key-num" data-insert="6">6</button>
+                    <button class="key-btn key-op" data-insert="*" title="Multiplication">×</button>
+
+                    <!-- Row 6: Stats & Numerals 1, 2, 3, − -->
+                    <button class="key-btn key-func" data-insert="!" title="Factorial (n!)">
+                        <span class="show-primary">n!</span>
+                        <span class="show-secondary">nCr</span>
+                    </button>
+                    <button class="key-btn key-func" data-insert="1/(" title="Reciprocal (1/x)">1/x</button>
+                    <button class="key-btn key-num" data-insert="1">1</button>
+                    <button class="key-btn key-num" data-insert="2">2</button>
+                    <button class="key-btn key-num" data-insert="3">3</button>
+                    <button class="key-btn key-op" data-insert="-" title="Subtraction">−</button>
+
+                    <!-- Row 7: Absolute, Negation, 0, Decimal, Ans, + -->
+                    <button class="key-btn key-func" data-insert="abs(" title="Absolute Value (|x|)">|x|</button>
+                    <button class="key-btn key-func" data-insert="Ans" title="Previous Answer">Ans</button>
+                    <button class="key-btn key-func" data-action="negate" title="Positive/Negative (±)">±</button>
+                    <button class="key-btn key-num" data-insert="0">0</button>
+                    <button class="key-btn key-num" data-insert=".">.</button>
+                    <button class="key-btn key-op" data-insert="+" title="Addition">+</button>
+
+                    <!-- Row 8: Combinatorics / Modulo / Equals -->
+                    <button class="key-btn key-func" data-insert="mod(" title="Modulo (%)">mod</button>
+                    <button class="key-btn key-func" data-insert="rand()" title="Random Number">rand</button>
+                    <button class="key-btn key-func" data-insert="phi" title="Golden Ratio (φ)">φ</button>
+                    <button class="key-btn key-func" data-insert="%" title="Percentage">%</button>
+                    <button class="key-btn key-equals" style="grid-column: span 2;" data-action="calculate" title="Calculate Result (=)">=</button>
+                </div>
+            </section>
+
+            <!-- 2. Interactive 2D Function Grapher View -->
+            <section id="viewGrapher" class="mode-view" aria-label="2D Function Grapher View">
+                <div class="grapher-container">
+                    <div class="grapher-controls">
+                        <div class="grapher-inputs">
+                            <div class="function-input-group">
+                                <span class="fn-badge f1">f(x) =</span>
+                                <input type="text" id="graphInputF1" class="graph-expr-input" value="sin(x)" placeholder="e.g. sin(x) * cos(x)">
+                            </div>
+                            <div class="function-input-group">
+                                <span class="fn-badge f2">g(x) =</span>
+                                <input type="text" id="graphInputF2" class="graph-expr-input" value="x^2 - 4" placeholder="e.g. 0.5 * x">
+                            </div>
+                        </div>
+                        <button id="btnPlotGraph" class="icon-btn" style="background: var(--primary); color: #000; font-weight: 700;">
+                            <i data-lucide="play"></i> Plot Curve
+                        </button>
+                    </div>
+
+                    <!-- Presets bar -->
+                    <div class="graph-presets-bar">
+                        <span style="font-size: 0.75rem; color: var(--text-muted); font-weight: 600;">PRESETS:</span>
+                        <button class="macro-chip graph-preset-btn" data-f1="sin(x)" data-f2="cos(x)">sin(x) & cos(x)</button>
+                        <button class="macro-chip graph-preset-btn" data-f1="x^3 - 3*x" data-f2="">Cubic Polynomial</button>
+                        <button class="macro-chip graph-preset-btn" data-f1="sin(x)/x" data-f2="">Sinc Function</button>
+                        <button class="macro-chip graph-preset-btn" data-f1="1/(1 + e^(-x))" data-f2="">Sigmoid</button>
+                        <button class="macro-chip graph-preset-btn" data-f1="e^(-(x^2))" data-f2="">Gaussian Bell</button>
+                    </div>
+
+                    <!-- Canvas Viewport -->
+                    <div class="graph-canvas-wrapper">
+                        <canvas id="graphCanvas"></canvas>
+                        <!-- Floating canvas overlay tools -->
+                        <div class="graph-overlay-tools">
+                            <button id="btnZoomIn" class="graph-btn" title="Zoom In"><i data-lucide="zoom-in"></i></button>
+                            <button id="btnZoomOut" class="graph-btn" title="Zoom Out"><i data-lucide="zoom-out"></i></button>
+                            <button id="btnResetView" class="graph-btn" title="Reset Viewport"><i data-lucide="rotate-ccw"></i></button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 3. Programmer Mode View -->
+            <section id="viewProgrammer" class="mode-view" aria-label="Programmer Base Mode View">
+                <div class="prog-container">
+                    <!-- Word Size & Mode Header -->
+                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                        <span style="font-weight: 600; font-size: 0.95rem; color: var(--text-muted);">Base Conversions & Bit Operations</span>
+                        <div style="display: flex; gap: 8px; align-items: center;">
+                            <label for="progWordSizeSelect" style="font-size: 0.8rem; color: var(--text-muted);">Word Size:</label>
+                            <select id="progWordSizeSelect" class="select-input">
+                                <option value="8">8-bit (BYTE)</option>
+                                <option value="16">16-bit (WORD)</option>
+                                <option value="32" selected>32-bit (DWORD)</option>
+                                <option value="64">64-bit (QWORD)</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- 4 Live Base Rows -->
+                    <div class="prog-conversions">
+                        <div class="prog-row" data-base="HEX">
+                            <span class="prog-label">HEX</span>
+                            <span class="prog-val" id="progValHex">0</span>
+                        </div>
+                        <div class="prog-row active" data-base="DEC">
+                            <span class="prog-label">DEC</span>
+                            <span class="prog-val" id="progValDec">0</span>
+                        </div>
+                        <div class="prog-row" data-base="OCT">
+                            <span class="prog-label">OCT</span>
+                            <span class="prog-val" id="progValOct">0</span>
+                        </div>
+                        <div class="prog-row" data-base="BIN">
+                            <span class="prog-label">BIN</span>
+                            <span class="prog-val" id="progValBin">0000</span>
+                        </div>
+                    </div>
+
+                    <!-- Interactive Bit Matrix -->
+                    <div class="bit-matrix-box">
+                        <div class="bit-matrix-header">
+                            <span>Interactive Bit Toggle Switchboard (Click bits to flip 0 ↔ 1)</span>
+                            <span id="bitCountDisplay">32 Bits</span>
+                        </div>
+                        <div class="bit-switches" id="bitSwitchesContainer"></div>
+                    </div>
+
+                    <!-- Programmer Keypad -->
+                    <div class="keypad-wrapper" id="programmerKeypad">
+                        <button class="key-btn key-func" data-prog-op="AND">AND</button>
+                        <button class="key-btn key-func" data-prog-op="OR">OR</button>
+                        <button class="key-btn key-func" data-prog-op="XOR">XOR</button>
+                        <button class="key-btn key-func" data-prog-op="NOT">NOT</button>
+                        <button class="key-btn key-func" data-prog-op="SHL">&lt;&lt; SHL</button>
+                        <button class="key-btn key-func" data-prog-op="SHR">&gt;&gt; SHR</button>
+
+                        <button class="key-btn key-func hex-key" data-prog-input="A">A</button>
+                        <button class="key-btn key-func hex-key" data-prog-input="B">B</button>
+                        <button class="key-btn key-num" data-prog-input="7">7</button>
+                        <button class="key-btn key-num" data-prog-input="8">8</button>
+                        <button class="key-btn key-num" data-prog-input="9">9</button>
+                        <button class="key-btn key-danger" data-prog-action="clear">AC</button>
+
+                        <button class="key-btn key-func hex-key" data-prog-input="C">C</button>
+                        <button class="key-btn key-func hex-key" data-prog-input="D">D</button>
+                        <button class="key-btn key-num" data-prog-input="4">4</button>
+                        <button class="key-btn key-num" data-prog-input="5">5</button>
+                        <button class="key-btn key-num" data-prog-input="6">6</button>
+                        <button class="key-btn key-danger" data-prog-action="backspace"><i data-lucide="delete"></i></button>
+
+                        <button class="key-btn key-func hex-key" data-prog-input="E">E</button>
+                        <button class="key-btn key-func hex-key" data-prog-input="F">F</button>
+                        <button class="key-btn key-num" data-prog-input="1">1</button>
+                        <button class="key-btn key-num" data-prog-input="2">2</button>
+                        <button class="key-btn key-num" data-prog-input="3">3</button>
+                        <button class="key-btn key-num" data-prog-input="0">0</button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 4. Solvers Module View -->
+            <section id="viewSolver" class="mode-view" aria-label="Equation Solvers View">
+                <div class="cards-grid">
+                    <!-- Quadratic Equation Solver -->
+                    <div class="tool-card">
+                        <div class="card-title">
+                            <i data-lucide="git-commit"></i> Quadratic Solver: ax² + bx + c = 0
+                        </div>
+                        <div class="input-row">
+                            <input type="number" id="quadA" class="form-input" placeholder="a (e.g. 1)" value="1">
+                            <input type="number" id="quadB" class="form-input" placeholder="b (e.g. -5)" value="-5">
+                            <input type="number" id="quadC" class="form-input" placeholder="c (e.g. 6)" value="6">
+                        </div>
+                        <button id="btnSolveQuad" class="icon-btn" style="background: var(--primary); color: #000; font-weight: 700;">
+                            Solve Equation
+                        </button>
+                        <div class="solver-steps" id="quadSteps">
+                            <span>Ready. Enter coefficients a, b, c and click Solve.</span>
+                        </div>
+                    </div>
+
+                    <!-- 2-Variable Linear System Solver -->
+                    <div class="tool-card">
+                        <div class="card-title">
+                            <i data-lucide="layers"></i> 2x2 Linear System: Cramer's Rule
+                        </div>
+                        <div style="display: flex; flex-direction: column; gap: 6px;">
+                            <div class="input-row">
+                                <input type="number" id="linA1" class="form-input" placeholder="a1" value="2">
+                                <span>x +</span>
+                                <input type="number" id="linB1" class="form-input" placeholder="b1" value="3">
+                                <span>y =</span>
+                                <input type="number" id="linC1" class="form-input" placeholder="c1" value="8">
+                            </div>
+                            <div class="input-row">
+                                <input type="number" id="linA2" class="form-input" placeholder="a2" value="1">
+                                <span>x -</span>
+                                <input type="number" id="linB2" class="form-input" placeholder="b2" value="2">
+                                <span>y =</span>
+                                <input type="number" id="linC2" class="form-input" placeholder="c2" value="-3">
+                            </div>
+                        </div>
+                        <button id="btnSolveLinear" class="icon-btn" style="background: var(--primary); color: #000; font-weight: 700;">
+                            Solve System
+                        </button>
+                        <div class="solver-steps" id="linearSteps">
+                            <span>Ready. Enter equations and click Solve.</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 5. Unit Converter View -->
+            <section id="viewConverter" class="mode-view" aria-label="Unit Converter View">
+                <div class="tool-card" style="max-width: 680px; margin: 0 auto;">
+                    <div class="card-title">
+                        <i data-lucide="scale"></i> Multi-Unit Scientific Converter
+                    </div>
+                    <div class="form-group">
+                        <label for="unitCatSelect" class="form-label">Category</label>
+                        <select id="unitCatSelect" class="select-input" style="width: 100%;">
+                            <option value="length">Length</option>
+                            <option value="mass">Mass & Weight</option>
+                            <option value="temperature">Temperature</option>
+                            <option value="speed">Speed</option>
+                            <option value="data">Data Storage</option>
+                            <option value="energy">Energy</option>
+                        </select>
+                    </div>
+
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px;">
+                        <div class="form-group">
+                            <label for="unitFromInput" class="form-label">From Value</label>
+                            <input type="number" id="unitFromInput" class="form-input" value="1">
+                            <select id="unitFromSelect" class="select-input" style="margin-top: 6px;"></select>
+                        </div>
+                        <div class="form-group">
+                            <label for="unitToOutput" class="form-label">Converted Value</label>
+                            <input type="text" id="unitToOutput" class="form-input" readonly>
+                            <select id="unitToSelect" class="select-input" style="margin-top: 6px;"></select>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Drawer Backdrop -->
+    <div class="drawer-backdrop" id="drawerBackdrop"></div>
+
+    <!-- 1. Calculation History Drawer -->
+    <aside class="side-drawer drawer-right" id="historyDrawer" aria-label="Calculation History">
+        <div class="drawer-header">
+            <div class="drawer-title">
+                <i data-lucide="history"></i> Calculation History
+            </div>
+            <button id="btnCloseHistory" class="icon-btn" style="padding: 4px 8px;"><i data-lucide="x"></i></button>
+        </div>
+        <div class="drawer-search-box">
+            <input type="text" id="historySearchInput" class="search-input" placeholder="Search calculations...">
+        </div>
+        <div class="drawer-content" id="historyListContainer">
+            <!-- Dynamically populated -->
+        </div>
+        <div class="drawer-footer">
+            <button id="btnClearHistory" class="icon-btn key-danger btn-xs">
+                <i data-lucide="trash-2"></i> Clear History
+            </button>
+            <div style="display: flex; gap: 6px;">
+                <button id="btnExportHistoryCSV" class="icon-btn btn-xs" title="Export as CSV">CSV</button>
+                <button id="btnExportHistoryJSON" class="icon-btn btn-xs" title="Export as JSON">JSON</button>
+            </div>
+        </div>
+    </aside>
+
+    <!-- 2. Starred Favorites & Notes Drawer -->
+    <aside class="side-drawer drawer-right" id="favoritesDrawer" aria-label="Starred Calculations & Formulas">
+        <div class="drawer-header">
+            <div class="drawer-title">
+                <i data-lucide="star" style="color: #fbbf24;"></i> Starred Favorites & Formulas
+            </div>
+            <button id="btnCloseFavorites" class="icon-btn" style="padding: 4px 8px;"><i data-lucide="x"></i></button>
+        </div>
+        <div class="drawer-search-box">
+            <input type="text" id="favSearchInput" class="search-input" placeholder="Search title, formula, notes, tags...">
+        </div>
+        <!-- Category Filter Chips -->
+        <div class="category-filter-chips" id="favCategoryFilterChips">
+            <span class="cat-chip active" data-cat="All">All</span>
+        </div>
+        <div class="drawer-content" id="favoritesListContainer">
+            <!-- Dynamically populated -->
+        </div>
+        <div class="drawer-footer">
+            <button id="btnAddNewFavorite" class="icon-btn btn-xs" style="background: var(--primary); color: #000; font-weight: 600;">
+                <i data-lucide="plus"></i> New Favorite
+            </button>
+            <div style="display: flex; gap: 6px;">
+                <button id="btnBackupFavs" class="icon-btn btn-xs" title="Export All Data Backup">Backup</button>
+                <button id="btnRestoreFavs" class="icon-btn btn-xs" title="Restore Data">Restore</button>
+            </div>
+        </div>
+    </aside>
+
+    <!-- Edit Favorite Modal -->
+    <div class="modal-backdrop" id="editFavoriteModal">
+        <div class="modal-card">
+            <div class="modal-header">
+                <h3 id="favModalTitle" style="font-size: 1.15rem; font-weight: 700; color: var(--text-main);">
+                    Save Calculation to Favorites
+                </h3>
+                <button id="btnCloseFavModal" class="icon-btn" style="padding: 4px 8px;"><i data-lucide="x"></i></button>
+            </div>
+            <div class="modal-body">
+                <input type="hidden" id="favEditId">
+                <div class="form-group">
+                    <label for="favTitleInput" class="form-label">Title / Formula Name *</label>
+                    <input type="text" id="favTitleInput" class="form-input" placeholder="e.g. Kinetic Energy Formula">
+                </div>
+                <div class="form-group">
+                    <label for="favExprInput" class="form-label">Mathematical Expression *</label>
+                    <input type="text" id="favExprInput" class="form-input" placeholder="e.g. 0.5 * m * v^2">
+                </div>
+                <div class="form-group">
+                    <label for="favCategoryInput" class="form-label">Category Tag</label>
+                    <input type="text" id="favCategoryInput" class="form-input" placeholder="e.g. Physics, Math, Finance, Geometry">
+                </div>
+                <div class="form-group">
+                    <label for="favNotesInput" class="form-label">Custom Notes & Remarks</label>
+                    <textarea id="favNotesInput" class="form-input" rows="3" placeholder="Add any helpful explanation or variables context..."></textarea>
+                </div>
+                <div style="display: flex; align-items: center; gap: 8px;">
+                    <input type="checkbox" id="favPinMacroCheckbox" style="accent-color: var(--primary); cursor: pointer; width: 16px; height: 16px;">
+                    <label for="favPinMacroCheckbox" style="font-size: 0.85rem; color: var(--text-main); cursor: pointer;">
+                        Pin as Quick Macro on Keypad
+                    </label>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button id="btnCancelFavModal" class="icon-btn">Cancel</button>
+                <button id="btnSaveFavModal" class="icon-btn" style="background: var(--primary); color: #000; font-weight: 700;">
+                    Save to Favorites
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Keyboard Shortcuts Modal -->
+    <div class="modal-backdrop" id="shortcutsModal">
+        <div class="modal-card" style="width: 580px;">
+            <div class="modal-header">
+                <h3 style="font-size: 1.15rem; font-weight: 700; color: var(--text-main);">
+                    Keyboard Shortcuts & Hotkeys
+                </h3>
+                <button id="btnCloseShortcuts" class="icon-btn" style="padding: 4px 8px;"><i data-lucide="x"></i></button>
+            </div>
+            <div class="shortcuts-grid">
+                <div class="shortcut-row"><span>Numbers 0-9 & .</span><span class="kbd-badge">0-9, .</span></div>
+                <div class="shortcut-row"><span>Basic Math (+, -, *, /)</span><span class="kbd-badge">+, -, *, /</span></div>
+                <div class="shortcut-row"><span>Calculate Result</span><span class="kbd-badge">Enter / =</span></div>
+                <div class="shortcut-row"><span>Clear All (AC)</span><span class="kbd-badge">Escape / c</span></div>
+                <div class="shortcut-row"><span>Backspace</span><span class="kbd-badge">Backspace</span></div>
+                <div class="shortcut-row"><span>Parentheses</span><span class="kbd-badge">( )</span></div>
+                <div class="shortcut-row"><span>Exponent Power (x^y)</span><span class="kbd-badge">^</span></div>
+                <div class="shortcut-row"><span>Factorial (n!)</span><span class="kbd-badge">!</span></div>
+                <div class="shortcut-row"><span>Sine Function</span><span class="kbd-badge">s</span></div>
+                <div class="shortcut-row"><span>Cosine Function</span><span class="kbd-badge">o</span></div>
+                <div class="shortcut-row"><span>Tangent Function</span><span class="kbd-badge">t</span></div>
+                <div class="shortcut-row"><span>Square Root</span><span class="kbd-badge">r</span></div>
+                <div class="shortcut-row"><span>Pi Constant (π)</span><span class="kbd-badge">p</span></div>
+                <div class="shortcut-row"><span>Euler's Constant (e)</span><span class="kbd-badge">e</span></div>
+                <div class="shortcut-row"><span>Natural Log (ln)</span><span class="kbd-badge">l</span></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notifications Container -->
+    <div class="toast-container" id="toastContainer"></div>
+
+    <!-- Hidden file input for restore -->
+    <input type="file" id="restoreFileInput" accept=".json" style="display: none;">
+
+    <!-- Application Script Modules -->
+    <script src="js/audioEffects.js"></script>
+    <script src="js/mathEngine.js"></script>
+    <script src="js/historyFavorites.js"></script>
+    <script src="js/grapher.js"></script>
+    <script src="js/solverAndConverter.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>
