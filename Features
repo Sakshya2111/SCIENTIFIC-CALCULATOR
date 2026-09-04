@@ -1,0 +1,83 @@
+🧮 1. Advanced Scientific Calculator Engine
+Full Operator Precedence (PEMDAS): Correctly evaluates expressions like 2 + 3 * 4 = 14.
+Smart Implicit Multiplication: Automatically interprets 2(3+4) as 2*(3+4), 2pi as 2*pi, and 2sin(30) as 2*sin(30).
+Trigonometry & Hyperbolic Functions:
+Standard: sin, cos, tan
+Inverse: asin, acos, atan
+Hyperbolic: sinh, cosh, tanh, asinh, acosh, atanh
+Degree & Radian Modes: One-tap toggle between DEG and RAD with live recalculation.
+Powers & Roots: $x^2$, $x^3$, $x^y$, $\sqrt{x}$, $\sqrt[3]{x}$, $\sqrt[y]{x}$, $\frac{1}{x}$, $10^x$, $e^x$, $2^x$.
+Logarithms: Natural log ($\ln$), base-10 ($\log_{10}$), base-2 ($\log_2$).
+Combinatorics & Probability: Factorial $n!$ (with Lanczos Gamma approximation for non-integers), Permutations $nPr$, Combinations $nCr$, Random number generator rand().
+Scientific Constants: Built-in high precision constants:
+$\pi \approx 3.1415926535$
+$e \approx 2.7182818284$
+$\phi \text{ (Golden Ratio)} \approx 1.6180339887$
+Planck constant $h$, Speed of Light $c$, Gravitational constant $G$, Boltzmann constant $k_B$.
+Memory Registers: Full memory management (MC, MR, M+, M-, MS) with an active memory indicator badge.
+Live Formula Syntax Highlighting: Color-coded tokens for numbers, operators, functions, parentheses, and constants.
+Instant Live Result Preview: Real-time evaluation output appears softly underneath your input before pressing =.
+⭐ 2. Categorized Favorites & Important Section
+1-Click Star: Instantly star any calculation from the display or history log.
+Custom Titles, Categories & Notes:
+Give calculations custom names (e.g. "Kinetic Energy Formula", "Compound Interest", "Pythagoras Hypotenuse").
+Categorize with tags (Physics, Math, Finance, Geometry, Custom).
+Add descriptive notes and explanations of variables.
+Pinned Keypad Macros: Pin your most important formulas as quick-tap macro chips directly above the keypad for 1-tap calculation.
+Category Filter Chips: Filter favorites by category with one click.
+Backup & Restore: Export all your saved favorites and data to JSON or restore anytime.
+📜 3. Persistent Calculation History
+Local Storage Persistence: Automatically saves all your calculations across browser restarts.
+Timestamp & Context: Records exact formula, result, date/time, and DEG/RAD mode.
+History Actions:
+↖️ Insert: Reloads the formula back into the active calculator display.
+📋 Copy: Copies the exact result to clipboard.
+⭐ Favorite: Direct star button to add straight to favorites.
+🗑️ Delete: Remove individual entries or clear all history.
+Export Options: Export your entire calculation log as CSV (for Excel/Sheets) or JSON.
+📈 4. Interactive 2D Function Grapher
+Dual-Function Plotting: Plot two curves simultaneously: $f(x)$ and $g(x)$.
+Interactive Canvas Controls:
+Click & drag to pan across the Cartesian coordinate plane.
+Mousewheel zoom in and zoom out.
+Dynamic gridlines with glowing zero axes.
+Interactive Coordinate Tracer: Hover anywhere on the canvas to inspect exact $(x, f(x))$ and $(x, g(x))$ coordinates with crosshairs and tooltip.
+1-Click Formula Presets: Instant plots for $\sin(x) \cdot \cos(x)$, Cubic Polynomials $x^3 - 3x$, Sinc Function $\frac{\sin(x)}{x}$, Sigmoid $\frac{1}{1 + e^{-x}}$, and Gaussian Bell curves $e^{-x^2}$.
+💻 5. Programmer Mode & Bit Matrix
+4 Simultaneous Base Conversions: Real-time synchronization across HEX (Hexadecimal), DEC (Decimal), OCT (Octal), and BIN (Binary).
+Interactive 8/16/32/64-bit LED Switchboard: Click any individual bit to flip between $0 \leftrightarrow 1$ with live recalculation.
+Bitwise Logic Operators: AND, OR, XOR, NOT, << SHL (Shift Left), >> SHR (Shift Right).
+Hexadecimal Keypad: Includes full A through F hex inputs.
+📐 6. Equation Solvers & Multi-Unit Converter
+Quadratic Equation Solver: Solves $ax^2 + bx + c = 0$ with step-by-step discriminant $\Delta = b^2 - 4ac$, real/complex conjugate roots, and parabola vertex $(h, k)$.
+2x2 Linear System Solver: Solves simultaneous linear equations using Cramer's Rule determinants ($D, D_x, D_y$) with step-by-step solutions.
+Multi-Unit Converter: Real-time two-way unit conversion for:
+Length: Meters, Kilometers, Centimeters, Millimeters, Miles, Yards, Feet, Inches, Nautical Miles.
+Mass & Weight: Kilograms, Grams, Milligrams, Metric Tons, Pounds, Ounces.
+Temperature: Celsius (°C), Fahrenheit (°F), Kelvin (K).
+Speed: m/s, km/h, mph, Knots.
+Data Storage: Bytes, KB, MB, GB, TB, Bits.
+Energy: Joules, Kilojoules, Calories, Kilocalories, Watt-hours, kWh, Electronvolts.
+🎨 7. Aesthetics, Themes & Audio Feedback
+5 Curated Themes:
+⚡ Cyber Neon (Dark Obsidian with Neon Cyan & Magenta glow)
+🌌 Deep Space (Nebula Purple & Stellar Pink)
+💻 Matrix Green (Hacker OLED Charcoal & Toxic Emerald)
+🌆 Sunset Amber (Cyberpunk Warm Amber & Coral)
+❄️ Titanium Frost (Crisp Frosted Glass Light Theme)
+Web Audio Synthesizer: Realistic tactile mechanical switch clicks and C-major chords on calculation (with instant mute toggle).
+Glassmorphism UI: Backdrop blur panels, subtle gradient borders, and micro-animations.
+⌨️ 8. Global Keyboard & Shortcut Support
+Action	Key / Shortcut
+Numbers & Decimal	0 - 9, .
+Basic Math Operators	+, -, *, /
+Calculate Result	Enter or =
+Clear All (AC)	Escape or c
+Backspace	Backspace
+Parentheses	( and )
+Power Exponent	^
+Factorial	!
+Sine / Cosine / Tangent	s, o, t
+Square Root	r
+Pi / Euler's Number	p, e
+Natural Logarithm	l
